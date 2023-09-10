@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -60,13 +61,14 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.deleteById(reviewId);
     }
 
+    @Override
+    public List<ReviewDTO> getReviewByBookId(int bookId) {
+        return reviewRepository.findAllByBookId(bookId).stream()
+                .map(review -> modelMapper.map(review, ReviewDTO.class)).toList();
+    }
+
     private Review getReviewById(int reviewId) {
         return reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException("Review not found", HttpStatus.NOT_FOUND));
     }
-//
-//    @Override
-//    public List<ReviewDTO> getAllReviews() {
-//        return null;
-//    }
 }
