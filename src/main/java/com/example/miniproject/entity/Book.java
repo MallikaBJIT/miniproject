@@ -28,6 +28,6 @@ public class Book {
     private boolean available = true;
     private Double rating = 0.0;
 
-    @OneToMany(mappedBy = "book", orphanRemoval = true)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Review> review;
 }
