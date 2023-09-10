@@ -27,17 +27,16 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void createReview(int bookId, int userId, ReviewDTO reviewDTO) {
+        if (reviewRepository.existsByUserIdAndBookId(userId, bookId)) {
+            throw new CustomException("You are not allowed to review again", HttpStatus.CONFLICT);
+        }
         Review review = modelMapper.map(reviewDTO, Review.class);
-        Optional<Book> book = bookRepository.findById(bookId);
-        if (book.isEmpty()) {
-            throw new CustomException("Book id not exist", HttpStatus.NOT_FOUND);
-        }
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new CustomException("User id not exist", HttpStatus.NOT_FOUND);
-        }
-        review.setUser(user.get());
-        review.setBook(book.get());
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new CustomException("Book id not exist", HttpStatus.NOT_FOUND));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException("User id not exist", HttpStatus.NOT_FOUND));
+        review.setUser(user);
+        review.setBook(book);
         reviewRepository.save(review);
     }
 
