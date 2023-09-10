@@ -2,18 +2,17 @@ package com.example.miniproject.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class BookResponseDTO {
-    private int id;
-    private String title;
-    private String body;
-    private Double rating;
-    private boolean available;
+public class BorrowedBookResponseDTO {
+    private String bookTitle;
+    private String userName;
+    private Date borrowedDate;
+    private Date dueDate;
 }

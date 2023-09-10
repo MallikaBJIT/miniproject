@@ -38,6 +38,7 @@ public class ReviewServiceImpl implements ReviewService {
         review.setUser(user);
         review.setBook(book);
         reviewRepository.save(review);
+        updateBookRating(book);
     }
 
     @Override
@@ -49,6 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
         review.setReviewText(reviewDTO.getReviewText());
         review.setRating(reviewDTO.getRating());
         reviewRepository.save(review);
+        updateBookRating(review.getBook());
     }
 
     @Override
@@ -58,6 +60,7 @@ public class ReviewServiceImpl implements ReviewService {
             throw new CustomException("User id does not matched", HttpStatus.NOT_FOUND);
         }
         reviewRepository.deleteById(reviewId);
+        updateBookRating(review.getBook());
     }
 
     @Override
@@ -69,5 +72,13 @@ public class ReviewServiceImpl implements ReviewService {
     private Review getReviewById(int reviewId) {
         return reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException("Review not found", HttpStatus.NOT_FOUND));
+    }
+
+    private void updateBookRating(Book book) {
+        double averageRating = book.getReview()
+                .stream().mapToDouble(Review::getRating)
+                .average().orElse(0.0);
+        book.setRating(averageRating);
+        bookRepository.save(book);
     }
 }

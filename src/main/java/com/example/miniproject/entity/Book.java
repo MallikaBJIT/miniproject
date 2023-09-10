@@ -27,4 +27,10 @@ public class Book {
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Review> review;
+
+    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private BorrowedBook borrowedBook;
+
+    @OneToMany(mappedBy = "book", orphanRemoval = false)
+    private List<UserHistory> userHistories = new ArrayList<>();
 }
