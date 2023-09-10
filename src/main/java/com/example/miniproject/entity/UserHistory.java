@@ -1,18 +1,38 @@
 package com.example.miniproject.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Data
-//@Builder
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Entity
-//@Table(name = "user_history_table")
-public class UserHistory {
+import java.util.Date;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "user_history_table")
+public class UserHistory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date borrowedDate;
+
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date dueDate;
+
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date returnDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
 }
