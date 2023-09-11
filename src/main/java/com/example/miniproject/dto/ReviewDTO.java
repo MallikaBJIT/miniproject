@@ -1,8 +1,6 @@
 package com.example.miniproject.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +14,6 @@ public class ReviewDTO {
     private String reviewText;
 
     @NotNull(message = "Rating is required")
+    @DecimalMax("10.0") @DecimalMin("0.0")
     private Double rating;
 }

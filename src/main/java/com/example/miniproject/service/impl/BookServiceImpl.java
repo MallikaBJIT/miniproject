@@ -6,12 +6,14 @@ import com.example.miniproject.dto.BookUpdateDto;
 import com.example.miniproject.entity.Book;
 import com.example.miniproject.exception.CustomException;
 import com.example.miniproject.repository.BookRepository;
+import com.example.miniproject.repository.ReviewRepository;
 import com.example.miniproject.service.BookService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,7 @@ import java.util.Optional;
 @Service
 public class BookServiceImpl implements BookService {
     private BookRepository bookRepository;
+    private ReviewRepository reviewRepository;
     private ModelMapper modelMapper;
 
     @Override
@@ -39,20 +42,21 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBook(int id) {
-        bookRepository.findById(id).orElseThrow(() ->
-                new CustomException("Book not found with ID: " + id, HttpStatus.NOT_FOUND));
-        bookRepository.deleteById(id);
+        Book book = getBookById(id);
+        book.setDeleted(true);
+        bookRepository.save(book);
+        reviewRepository.deleteReviewsForDeletedBooks(id);
     }
 
     private Book getBookById(int id) {
-        return bookRepository.findById(id)
+        return bookRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() ->
                         new CustomException("Book not found with ID: " + id, HttpStatus.NOT_FOUND));
     }
 
     @Override
     public List<BookResponseDTO> getAllBooks() {
-        return bookRepository.findAll()
+        return bookRepository.findAllByIsDeleted(false)
                 .stream().map(book -> modelMapper.map(book, BookResponseDTO.class)).toList();
     }
 }

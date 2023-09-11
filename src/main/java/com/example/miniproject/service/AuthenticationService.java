@@ -27,7 +27,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(UserRequestDTO request) {
         boolean isPresent = userRepository.findByEmail(request.getEmail()).isPresent();
         if (isPresent) {
-            throw new CustomException("Mail should be unique", HttpStatus.BAD_REQUEST);
+            throw new CustomException("Email should be unique", HttpStatus.BAD_REQUEST);
         }
         var user = User.builder().firstName(request.getFirstName())
                 .lastName(request.getLastName()).email(request.getEmail())

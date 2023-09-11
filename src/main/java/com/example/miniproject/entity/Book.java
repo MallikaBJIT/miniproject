@@ -23,6 +23,7 @@ public class Book {
     private String body;
 
     private boolean available = true;
+    private boolean isDeleted = false;
     private Double rating = 0.0;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, orphanRemoval = true)

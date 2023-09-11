@@ -30,13 +30,16 @@ public class ReviewServiceImpl implements ReviewService {
         if (reviewRepository.existsByUserIdAndBookId(userId, bookId)) {
             throw new CustomException("You are not allowed to review again", HttpStatus.CONFLICT);
         }
-        Review review = modelMapper.map(reviewDTO, Review.class);
-        Book book = bookRepository.findById(bookId)
+
+        Book book = bookRepository.findByIdAndIsDeletedFalse(bookId)
                 .orElseThrow(() -> new CustomException("Book id not exist", HttpStatus.NOT_FOUND));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException("User id not exist", HttpStatus.NOT_FOUND));
+
+        Review review = modelMapper.map(reviewDTO, Review.class);
         review.setUser(user);
         review.setBook(book);
+
         reviewRepository.save(review);
         updateBookRating(book);
     }
@@ -65,6 +68,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<ReviewDTO> getReviewByBookId(int bookId) {
+        Book book = bookRepository.findByIdAndIsDeletedFalse(bookId)
+                .orElseThrow(() -> new CustomException("Book id not exist", HttpStatus.NOT_FOUND));
+
         return reviewRepository.findAllByBookId(bookId).stream()
                 .map(review -> modelMapper.map(review, ReviewDTO.class)).toList();
     }

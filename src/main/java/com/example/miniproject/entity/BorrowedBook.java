@@ -18,11 +18,11 @@ public class BorrowedBook {
     private Integer borrowId;
 
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private Date borrowedDate;
 
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private Date dueDate;
 
     @ManyToOne

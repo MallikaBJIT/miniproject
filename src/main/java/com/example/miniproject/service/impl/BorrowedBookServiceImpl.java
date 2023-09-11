@@ -62,8 +62,7 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
 
     @Override
     public void returnBook(int bookId) {
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new CustomException("Book doesn't exist", HttpStatus.NOT_FOUND));
+        Book book = getBook(bookId);
 
         if (book.isAvailable()) {
             throw new CustomException("Book is available and not able to return", HttpStatus.BAD_REQUEST);
@@ -81,7 +80,7 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
     }
 
     private Book getBook(int bookId) {
-        return bookRepository.findById(bookId)
+        return bookRepository.findByIdAndIsDeletedFalse(bookId)
                 .orElseThrow(() -> new CustomException("Book doesn't exist", HttpStatus.NOT_FOUND));
     }
 }
