@@ -1,6 +1,8 @@
 package com.example.miniproject.config;
 
 import com.example.miniproject.auth.JwtAuthenticationFilter;
+import com.example.miniproject.entity.User;
+import com.example.miniproject.utils.AppConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -33,10 +35,18 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "books/create").hasRole(AppConstant.ADMIN)
+                        .requestMatchers(HttpMethod.PUT, "books/update/{id}").hasRole(AppConstant.ADMIN)
+                        .requestMatchers(HttpMethod.DELETE, "books/delete/{id}").hasRole(AppConstant.ADMIN)
+                        .requestMatchers(HttpMethod.GET, "books/all").hasAnyRole(AppConstant.ADMIN, AppConstant.USER)
+
+                        .requestMatchers(HttpMethod.POST, "books/{bookId}/user/{userId}/borrow").hasRole(AppConstant.USER)
+                        .requestMatchers(HttpMethod.GET, "books//{bookId}/return").hasRole(AppConstant.USER)
+                        //.requestMatchers(HttpMethod.GET, "books/all").hasRole(AppConstant.USER)
+                        //.requestMatchers(HttpMethod.GET, "books/all").hasRole(AppConstant.USER)
                         .anyRequest().permitAll()
                 )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(excep -> excep.authenticationEntryPoint(authEntryPoint));
