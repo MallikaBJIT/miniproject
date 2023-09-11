@@ -1,5 +1,6 @@
 package com.example.miniproject.repository;
 
+import com.example.miniproject.entity.User;
 import com.example.miniproject.entity.UserHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

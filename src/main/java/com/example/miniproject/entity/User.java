@@ -40,8 +40,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Review> review = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private BorrowedBook borrowedBook;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BorrowedBook> borrowedBook;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserHistory> userHistories = new ArrayList<>();
