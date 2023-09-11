@@ -34,4 +34,7 @@ public class Book {
 
     @OneToMany(mappedBy = "book", orphanRemoval = false)
     private List<UserHistory> userHistories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "book", orphanRemoval = false)
+    private List<ReservedBook> reservedBooks = new ArrayList<>();
 }

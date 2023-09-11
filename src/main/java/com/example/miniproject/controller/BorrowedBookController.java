@@ -1,7 +1,9 @@
 package com.example.miniproject.controller;
 
 import com.example.miniproject.dto.BorrowedBookDTO;
+import com.example.miniproject.entity.User;
 import com.example.miniproject.response.ResponseHandler;
+import com.example.miniproject.service.AuthenticationService;
 import com.example.miniproject.service.BorrowedBookService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +16,15 @@ import org.springframework.web.bind.annotation.*;
 public class BorrowedBookController {
     @Autowired
     private BorrowedBookService borrowedBookService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
-    @PostMapping("/{bookId}/user/{userId}/borrow")
-    public ResponseEntity<?> borrowBook(@PathVariable int bookId, @PathVariable int userId
+    @PostMapping("/{bookId}/borrow")
+    public ResponseEntity<?> borrowBook(@PathVariable int bookId
             , @RequestBody @Valid BorrowedBookDTO borrowedBookDTO) {
+        User user = authenticationService.getUserFromToken();
         return ResponseHandler.generateResponse("Borrowed book", HttpStatus.OK,
-                borrowedBookService.borrowBook(bookId, userId, borrowedBookDTO));
+                borrowedBookService.borrowBook(bookId, user.getId(), borrowedBookDTO));
     }
 
     @DeleteMapping("/{bookId}/return")

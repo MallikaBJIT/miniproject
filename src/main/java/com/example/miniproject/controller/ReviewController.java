@@ -2,6 +2,7 @@ package com.example.miniproject.controller;
 
 import com.example.miniproject.dto.ReviewDTO;
 import com.example.miniproject.response.ResponseHandler;
+import com.example.miniproject.service.AuthenticationService;
 import com.example.miniproject.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/books")
 public class ReviewController {
     private ReviewService reviewService;
+    private AuthenticationService authenticationService;
 
     @PostMapping("{bookId}/user/{userId}/review")
     public ResponseEntity<?> add(@PathVariable int bookId,

@@ -3,8 +3,6 @@ package com.example.miniproject.service.impl;
 import com.example.miniproject.dto.UserResponseDTO;
 import com.example.miniproject.entity.User;
 import com.example.miniproject.exception.CustomException;
-import com.example.miniproject.repository.BorrowedBookRepository;
-import com.example.miniproject.repository.UserHistoryRepository;
 import com.example.miniproject.repository.UserRepository;
 import com.example.miniproject.service.UserService;
 import lombok.AllArgsConstructor;

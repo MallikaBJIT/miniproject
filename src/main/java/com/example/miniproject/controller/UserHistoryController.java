@@ -1,6 +1,7 @@
 package com.example.miniproject.controller;
 
 import com.example.miniproject.response.ResponseHandler;
+import com.example.miniproject.service.AuthenticationService;
 import com.example.miniproject.service.UserHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserHistoryController {
     @Autowired
     private UserHistoryService userHistoryService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @GetMapping("users/{userId}/history")
     public ResponseEntity<?> get(@PathVariable int userId) {
