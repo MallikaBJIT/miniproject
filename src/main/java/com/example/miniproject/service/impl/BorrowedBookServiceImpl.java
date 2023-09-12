@@ -6,6 +6,7 @@ import com.example.miniproject.entity.*;
 import com.example.miniproject.exception.CustomException;
 import com.example.miniproject.repository.*;
 import com.example.miniproject.service.BorrowedBookService;
+import com.example.miniproject.service.EmailService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;

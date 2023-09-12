@@ -1,4 +1,4 @@
-package com.example.miniproject.service.impl;
+package com.example.miniproject.service;
 
 import com.example.miniproject.entity.EmailDetails;
 import org.springframework.beans.factory.annotation.Autowired;
