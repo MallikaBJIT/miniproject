@@ -36,6 +36,7 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
 
         book.setAvailable(false);
         BorrowedBook borrowedBook = modelMapper.map(borrowedBookDTO, BorrowedBook.class);
+        borrowedBook.setBorrowedDate(new Date());
         borrowedBook.setBook(book);
         borrowedBook.setUser(user);
 
@@ -54,7 +55,7 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
                 reservedBookRepository.delete(reservedBook));
 
         return new BorrowedBookResponseDTO(
-                book.getTitle(), user.getFirstName(), borrowedBookDTO.getBorrowedDate(), borrowedBookDTO.getDueDate()
+                book.getTitle(), user.getFirstName(), borrowedBook.getBorrowedDate(), borrowedBookDTO.getDueDate()
         );
     }
 

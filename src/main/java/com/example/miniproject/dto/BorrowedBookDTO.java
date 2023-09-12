@@ -11,9 +11,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BorrowedBookDTO {
-    @NotNull(message = "Borrowed date is required")
-    private Date borrowedDate;
-
     @NotNull(message = "Due date is required")
     private Date dueDate;
 }

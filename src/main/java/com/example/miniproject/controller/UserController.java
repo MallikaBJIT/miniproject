@@ -27,14 +27,14 @@ public class UserController {
 
     @GetMapping("/{userId}/books")
     public ResponseEntity<?> getBookByUserId(@PathVariable int userId) {
-        return ResponseHandler.generateResponse("User details", HttpStatus.OK,
-                userService.getBookByUserId(userId));
+        return ResponseHandler.generateResponse("Data fetched successfully", HttpStatus.OK,
+                userService.getBookByUserId(userId, authenticationService.getUserFromToken()));
     }
 
     @GetMapping("/{userId}/borrowed-books")
     public ResponseEntity<?> getBorrowedByBookByUserId(@PathVariable int userId) {
-        return ResponseHandler.generateResponse("User details", HttpStatus.OK,
-                userService.getBorrowedByBookByUserId(userId));
+        return ResponseHandler.generateResponse("User borrowed book data fetched successfully", HttpStatus.OK,
+                userService.getBorrowedByBookByUserId(userId, authenticationService.getUserFromToken()));
     }
 
 

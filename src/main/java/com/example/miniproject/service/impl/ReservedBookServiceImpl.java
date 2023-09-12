@@ -31,6 +31,10 @@ public class ReservedBookServiceImpl implements ReservedBookService {
                     "Book is available now. You may borrow book", HttpStatus.CONFLICT);
         }
 
+        if (book.getBorrowedBook().getUser().getId() == userId) {
+            throw new CustomException("You have already borrowed this book", HttpStatus.CONFLICT);
+        }
+
         if (reservedBookRepository.existsByUserIdAndBookId(userId, bookId)) {
             throw new CustomException("You have already reserved", HttpStatus.CONFLICT);
         }

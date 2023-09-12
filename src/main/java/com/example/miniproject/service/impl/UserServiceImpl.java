@@ -1,6 +1,7 @@
 package com.example.miniproject.service.impl;
 
 import com.example.miniproject.dto.UserResponseDTO;
+import com.example.miniproject.entity.Role;
 import com.example.miniproject.entity.User;
 import com.example.miniproject.exception.CustomException;
 import com.example.miniproject.repository.UserRepository;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -25,19 +28,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> getBookByUserId(int userId) {
-        User user = getUserById(userId);
-        return user.getUserHistories().stream().map(userHistory ->
-                userHistory.getBook().getTitle()
-        ).toList();
+    public Set<String> getBookByUserId(int userId, User user) {
+        if (!user.getRole().equals(Role.ADMIN) && userId != user.getId()) {
+            throw new CustomException("You are not allowed to view this history", HttpStatus.FORBIDDEN);
+        }
+        return userRepository.findById(userId).get()
+                .getUserHistories().stream().map(userHistory ->
+                        userHistory.getBook().getTitle()
+                ).collect(Collectors.toSet());
     }
 
     @Override
-    public List<String> getBorrowedByBookByUserId(int userId) {
-        User user = getUserById(userId);
-        return user.getBorrowedBook().stream()
+    public Set<String> getBorrowedByBookByUserId(int userId, User user) {
+        if (!user.getRole().equals(Role.ADMIN) && userId != user.getId()) {
+            throw new CustomException("You are not allowed to view the borrowed history"
+                    , HttpStatus.FORBIDDEN);
+        }
+        return userRepository.findById(userId).get()
+                .getBorrowedBook().stream()
                 .map(borrowedBook -> borrowedBook.getBook().getTitle())
-                .toList();
+                .collect(Collectors.toSet());
     }
 
     private User getUserById(int userId) {

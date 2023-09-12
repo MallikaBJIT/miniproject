@@ -1,8 +1,10 @@
 package com.example.miniproject.controller;
 
+import com.example.miniproject.dto.UserRequestDTO;
 import com.example.miniproject.response.ResponseHandler;
 import com.example.miniproject.service.AuthenticationService;
 import com.example.miniproject.service.UserHistoryService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,13 @@ public class UserHistoryController {
     private UserHistoryService userHistoryService;
     @Autowired
     private AuthenticationService authenticationService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("users/{userId}/history")
     public ResponseEntity<?> get(@PathVariable int userId) {
         return ResponseHandler.generateResponse("User Histories of user id " + userId,
-                HttpStatus.OK, userHistoryService.viewHistory(userId));
+                HttpStatus.OK,
+                userHistoryService.viewHistory(userId, authenticationService.getUserFromToken()));
     }
 }
