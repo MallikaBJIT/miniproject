@@ -43,9 +43,12 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBook(int id) {
         Book book = getBookById(id);
+
+        if (!book.isAvailable()) {
+            throw new CustomException("You can't delete a borrowed book with id " + id, HttpStatus.BAD_REQUEST);
+        }
         book.setDeleted(true);
         bookRepository.save(book);
-        reviewRepository.deleteReviewsForDeletedBooks(id);
     }
 
     private Book getBookById(int id) {

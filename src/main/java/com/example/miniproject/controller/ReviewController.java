@@ -17,27 +17,25 @@ public class ReviewController {
     private ReviewService reviewService;
     private AuthenticationService authenticationService;
 
-    @PostMapping("{bookId}/user/{userId}/review")
+    @PostMapping("{bookId}/reviews/create")
     public ResponseEntity<?> add(@PathVariable int bookId,
-                                 @PathVariable int userId,
                                  @RequestBody @Valid ReviewDTO reviewDTO) {
-        reviewService.createReview(bookId, userId, reviewDTO);
+        reviewService.createReview(bookId, authenticationService.getUserFromToken().getId(), reviewDTO);
         return ResponseHandler.generateResponse("Review is added", HttpStatus.OK);
     }
 
-    @PutMapping("user/{userId}/reviews/{reviewId}/update")
-    public ResponseEntity<?> update(@PathVariable int userId,
-                                    @PathVariable int reviewId,
+    @PutMapping("/reviews/{reviewId}/update")
+    public ResponseEntity<?> update(@PathVariable int reviewId,
                                     @RequestBody @Valid ReviewDTO reviewDTO) {
-        reviewService.updateReview(userId, reviewId, reviewDTO);
+        reviewService.updateReview(authenticationService.getUserFromToken().getId()
+                , reviewId, reviewDTO);
         return ResponseHandler.generateResponse("Review is updated", HttpStatus.OK);
     }
 
-    @DeleteMapping("/reviews/{reviewId}/user/{userId}/delete")
-    public ResponseEntity<?> delete(@PathVariable int reviewId,
-                                    @PathVariable int userId) {
-        reviewService.deleteReview(reviewId, userId);
-        return ResponseHandler.generateResponse("Book is deleted successfully", HttpStatus.OK);
+    @DeleteMapping("/reviews/{reviewId}/delete")
+    public ResponseEntity<?> delete(@PathVariable int reviewId) {
+        reviewService.deleteReview(reviewId, authenticationService.getUserFromToken().getId());
+        return ResponseHandler.generateResponse("Review is deleted successfully", HttpStatus.OK);
     }
 
     @GetMapping("{bookId}/reviews")

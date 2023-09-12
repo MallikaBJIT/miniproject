@@ -14,9 +14,4 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     public List<Review> findAllByBookId(int bookId);
 
     public boolean existsByUserIdAndBookId(int userId, int bookId);
-
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM Review r WHERE r.book.id = :bookId")
-    void deleteReviewsForDeletedBooks(@Param("bookId") int bookId);
 }
