@@ -6,15 +6,12 @@ import com.example.miniproject.entity.*;
 import com.example.miniproject.exception.CustomException;
 import com.example.miniproject.repository.*;
 import com.example.miniproject.service.BorrowedBookService;
-import com.example.miniproject.service.ReservedBookService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -25,6 +22,8 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
     private UserHistoryRepository userHistoryRepository;
     private ReservedBookRepository reservedBookRepository;
     private ModelMapper modelMapper;
+
+    private EmailService emailService;
 
     @Override
     public BorrowedBookResponseDTO borrowBook(int bookId, int userId, BorrowedBookDTO borrowedBookDTO) {
@@ -81,6 +80,12 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
         UserHistory userHistory = userHistoryRepository.findLastByBookId(bookId);
         userHistory.setReturnDate(new Date());
         userHistoryRepository.save(userHistory);
+
+        for (ReservedBook reserve : reservedBookRepository.findByBookId(bookId)) {
+            emailService.sendSimpleMail(new EmailDetails(reserve.getUser().getEmail()
+                    , "You may borrow book", "Book" + book.getTitle() + " is available"));
+        }
+
     }
 
     private Book getBook(int bookId) {
