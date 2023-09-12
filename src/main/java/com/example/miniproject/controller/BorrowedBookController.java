@@ -29,7 +29,8 @@ public class BorrowedBookController {
 
     @DeleteMapping("/{bookId}/return")
     public ResponseEntity<?> returnBook(@PathVariable int bookId) {
-        borrowedBookService.returnBook(bookId);
+        User user = authenticationService.getUserFromToken();
+        borrowedBookService.returnBook(bookId, user.getId());
         return ResponseHandler.generateResponse("Book is returned successfully", HttpStatus.OK);
     }
 

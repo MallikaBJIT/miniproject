@@ -2,16 +2,11 @@ package com.example.miniproject.service.impl;
 
 import com.example.miniproject.dto.BorrowedBookDTO;
 import com.example.miniproject.dto.BorrowedBookResponseDTO;
-import com.example.miniproject.entity.Book;
-import com.example.miniproject.entity.BorrowedBook;
-import com.example.miniproject.entity.User;
-import com.example.miniproject.entity.UserHistory;
+import com.example.miniproject.entity.*;
 import com.example.miniproject.exception.CustomException;
-import com.example.miniproject.repository.BookRepository;
-import com.example.miniproject.repository.BorrowedBookRepository;
-import com.example.miniproject.repository.UserHistoryRepository;
-import com.example.miniproject.repository.UserRepository;
+import com.example.miniproject.repository.*;
 import com.example.miniproject.service.BorrowedBookService;
+import com.example.miniproject.service.ReservedBookService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +23,13 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
     private BookRepository bookRepository;
     private UserRepository userRepository;
     private UserHistoryRepository userHistoryRepository;
+    private ReservedBookRepository reservedBookRepository;
     private ModelMapper modelMapper;
 
     @Override
     public BorrowedBookResponseDTO borrowBook(int bookId, int userId, BorrowedBookDTO borrowedBookDTO) {
         Book book = getBook(bookId);
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException("Invalid User", HttpStatus.NOT_FOUND));
+        User user = getUser(userId);
         if (!book.isAvailable()) {
             throw new CustomException("Book is not available for borrowed", HttpStatus.CONFLICT);
         }
@@ -54,6 +49,9 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
         userHistory.setUser(borrowedBook.getUser());
         userHistory.setBook(borrowedBook.getBook());
         userHistoryRepository.save(userHistory);
+        //if user previously reserved the book
+        reservedBookRepository.findByUserIdAndBookId(userId, bookId).ifPresent(reservedBook ->
+                reservedBookRepository.delete(reservedBook));
 
         return new BorrowedBookResponseDTO(
                 book.getTitle(), user.getFirstName(), borrowedBookDTO.getBorrowedDate(), borrowedBookDTO.getDueDate()
@@ -61,11 +59,16 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
     }
 
     @Override
-    public void returnBook(int bookId) {
+    public void returnBook(int bookId, int userId) {
         Book book = getBook(bookId);
+        User user = getUser(userId);
 
         if (book.isAvailable()) {
             throw new CustomException("Book is available and not able to return", HttpStatus.BAD_REQUEST);
+        }
+
+        if (book.getBorrowedBook().getUser().getId() != userId) {
+            throw new CustomException("You didn't borrowed the book", HttpStatus.BAD_REQUEST);
         }
 
         book.setAvailable(true);
@@ -80,7 +83,13 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
     }
 
     private Book getBook(int bookId) {
+        //get book which is not deleted
         return bookRepository.findByIdAndIsDeletedFalse(bookId)
                 .orElseThrow(() -> new CustomException("Book doesn't exist", HttpStatus.NOT_FOUND));
+    }
+
+    private User getUser(int userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException("Invalid User", HttpStatus.NOT_FOUND));
     }
 }

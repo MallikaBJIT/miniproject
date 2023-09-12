@@ -16,15 +16,15 @@ public class ReservedBookController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @GetMapping("/{bookId}/user/{userId}/reserve")
-    public ResponseEntity<?> reserveReservation(@PathVariable int bookId, @PathVariable int userId) {
-        reservedBookService.bookReserve(bookId, userId);
+    @GetMapping("/{bookId}/reserve")
+    public ResponseEntity<?> reserveReservation(@PathVariable int bookId) {
+        reservedBookService.bookReserve(bookId, authenticationService.getUserFromToken().getId());
         return ResponseHandler.generateResponse("Book is reserved", HttpStatus.CREATED);
     }
 
-    @GetMapping("/{bookId}/user/{userId}/cancel")
-    public ResponseEntity<?> cancelReservation(@PathVariable int bookId, @PathVariable int userId) {
-        reservedBookService.cancelReservation(bookId, userId);
+    @DeleteMapping("/{bookId}/cancel")
+    public ResponseEntity<?> cancelReservation(@PathVariable int bookId) {
+        reservedBookService.cancelReservation(bookId, authenticationService.getUserFromToken().getId());
         return ResponseHandler.generateResponse("Reservation is cancel", HttpStatus.OK);
     }
 }
