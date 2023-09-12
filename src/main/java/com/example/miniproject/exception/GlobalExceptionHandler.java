@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler({BadCredentialsException.class})
@@ -30,14 +33,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<?> handleValidationException(MethodArgumentNotValidException ex) {
-        StringBuilder errorMessage = new StringBuilder();
+        List<String> errorMessage = new ArrayList<>();
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             String message = error.getField().toUpperCase()
                     + ": " + error.getDefaultMessage();
-            errorMessage.append(message);
-            //errorMessage(Environment.NewLine);
+            errorMessage.add(message);
         });
-        return ResponseHandler.generateResponse(errorMessage.toString(), HttpStatus.BAD_REQUEST);
+        return ResponseHandler.generateResponse("Request Failed", HttpStatus.BAD_REQUEST, errorMessage);
     }
 
     @ExceptionHandler({CustomException.class})
