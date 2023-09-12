@@ -64,11 +64,7 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
         Book book = getBook(bookId);
         User user = getUser(userId);
 
-        if (book.isAvailable()) {
-            throw new CustomException("Book is available and not able to return", HttpStatus.BAD_REQUEST);
-        }
-
-        if (book.getBorrowedBook().getUser().getId() != userId) {
+        if (book.isAvailable() || book.getBorrowedBook().getUser().getId() != userId) {
             throw new CustomException("You didn't borrowed the book", HttpStatus.BAD_REQUEST);
         }
 
@@ -84,7 +80,9 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
 
         for (ReservedBook reserve : reservedBookRepository.findByBookId(bookId)) {
             emailService.sendSimpleMail(new EmailDetails(reserve.getUser().getEmail()
-                    , "You may borrow book", "Book" + book.getTitle() + " is available"));
+                    , "Hello " + reserve.getUser().getFirstName()
+                    + " " + reserve.getUser().getLastName() + ",\nYou may borrow book",
+                    "Book " + book.getTitle() + " is available"));
         }
 
     }

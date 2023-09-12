@@ -3,7 +3,6 @@ package com.example.miniproject.utils;
 public class AppConstant {
     public static final String ADMIN = "ADMIN";
     public static final String USER = "USER";
-
     public static final String SIGN_IN = "/user/login";
     public static final String SIGN_UP = "/user/register";
     public static final String USER_DETAILS = "users/{userId}";

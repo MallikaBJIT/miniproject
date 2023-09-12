@@ -23,7 +23,6 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String userId;
 
     @Column(nullable = false)
     private String firstName;
