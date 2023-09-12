@@ -35,15 +35,27 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "users/{userId}").hasRole(AppConstant.ADMIN)
+                        .requestMatchers(HttpMethod.GET, "users/{userId}/books").hasAnyRole(AppConstant.ADMIN, AppConstant.USER)
+                        .requestMatchers(HttpMethod.GET, "users/{userId}/borrowed-books").hasAnyRole(AppConstant.ADMIN, AppConstant.USER)
+
                         .requestMatchers(HttpMethod.POST, "books/create").hasRole(AppConstant.ADMIN)
                         .requestMatchers(HttpMethod.PUT, "books/update/{id}").hasRole(AppConstant.ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "books/delete/{id}").hasRole(AppConstant.ADMIN)
                         .requestMatchers(HttpMethod.GET, "books/all").hasAnyRole(AppConstant.ADMIN, AppConstant.USER)
 
-                        .requestMatchers(HttpMethod.POST, "books/{bookId}/user/{userId}/borrow").hasRole(AppConstant.USER)
-                        .requestMatchers(HttpMethod.GET, "books//{bookId}/return").hasRole(AppConstant.USER)
-                        //.requestMatchers(HttpMethod.GET, "books/all").hasRole(AppConstant.USER)
-                        //.requestMatchers(HttpMethod.GET, "books/all").hasRole(AppConstant.USER)
+                        .requestMatchers(HttpMethod.POST, "books/{bookId}/borrow").hasRole(AppConstant.USER)
+                        .requestMatchers(HttpMethod.DELETE, "books/{bookId}/return").hasRole(AppConstant.USER)
+
+                        .requestMatchers(HttpMethod.GET, "books/{bookId}/reserve").hasRole(AppConstant.USER)
+                        .requestMatchers(HttpMethod.DELETE, "books/{bookId}/cancel").hasRole(AppConstant.USER)
+
+                        .requestMatchers(HttpMethod.POST, "books/{bookId}/reviews/create").hasRole(AppConstant.USER)
+                        .requestMatchers(HttpMethod.PUT, "books/reviews/{reviewId}/update").hasRole(AppConstant.USER)
+                        .requestMatchers(HttpMethod.DELETE, "books/reviews/{reviewId}/delete").hasRole(AppConstant.USER)
+                        .requestMatchers(HttpMethod.GET, "books/{bookId}/reviews").hasAnyRole(AppConstant.ADMIN, AppConstant.USER)
+
+                        .requestMatchers(HttpMethod.GET, "users/{userId}/history").hasAnyRole(AppConstant.ADMIN, AppConstant.USER)
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
