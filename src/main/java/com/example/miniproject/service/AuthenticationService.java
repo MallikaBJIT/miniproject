@@ -30,22 +30,38 @@ public class AuthenticationService {
         if (isPresent) {
             throw new CustomException("Email should be unique", HttpStatus.BAD_REQUEST);
         }
-        var user = User.builder().firstName(request.getFirstName())
-                .lastName(request.getLastName()).email(request.getEmail())
+        var user = User
+                .builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
                 .address(request.getAddress())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.valueOf(request.getRole())).build();
+                .role(Role.valueOf(request.getRole()))
+                .build();
         userRepository.save(user);
+
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder().token(jwtToken).build();
+        return AuthenticationResponse
+                .builder()
+                .token(jwtToken)
+                .build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+                .authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                request.getEmail(),
+                                request.getPassword()
+                        )
+                );
         var user = userRepository.findByEmail(request.getEmail()).get();
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder().token(jwtToken).build();
+        return AuthenticationResponse
+                .builder()
+                .token(jwtToken)
+                .build();
     }
 
     public User getUserFromToken() {
