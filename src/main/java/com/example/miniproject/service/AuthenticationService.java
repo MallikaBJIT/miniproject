@@ -40,10 +40,10 @@ public class AuthenticationService {
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) throws HttpMessageNotReadableException, BadCredentialsException {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        var user = userRepository.findByEmail(request.getEmail()).get();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }

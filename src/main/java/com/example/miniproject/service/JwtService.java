@@ -19,7 +19,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private static final String code = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
+    private static final String SECURITY_CODE = "503E635266556A586E3272357738782F413F4428472B4B6250645367566B5991";
 
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -31,9 +31,12 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .claim("role", userDetails.getAuthorities())
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 20 * 60))
+                .setExpiration(new Date(System.currentTimeMillis() + 100000 * 20 * 60))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
     }
 
@@ -47,7 +50,7 @@ public class JwtService {
     }
 
     public Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(code);
+        byte[] keyBytes = Decoders.BASE64.decode(SECURITY_CODE);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

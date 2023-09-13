@@ -42,7 +42,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BorrowedBook> borrowedBook;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserHistory> userHistories = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", orphanRemoval = false)

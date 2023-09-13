@@ -26,10 +26,10 @@ public class Book {
     private boolean isDeleted = false;
     private Double rating = 0.0;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<Review> review;
 
-    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
     private BorrowedBook borrowedBook;
 
     @OneToMany(mappedBy = "book", orphanRemoval = false)

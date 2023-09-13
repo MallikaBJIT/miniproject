@@ -27,7 +27,7 @@ public class ReservedBookServiceImpl implements ReservedBookService {
         User user = getUser(userId);
 
         if (book.isAvailable()) {
-            throw new CustomException("Reservation Failed:\n" +
+            throw new CustomException("Reservation Failed: " +
                     "Book is available now. You may borrow book", HttpStatus.CONFLICT);
         }
 

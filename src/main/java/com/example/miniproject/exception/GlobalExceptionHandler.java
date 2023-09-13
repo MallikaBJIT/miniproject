@@ -1,6 +1,7 @@
 package com.example.miniproject.exception;
 
 import com.example.miniproject.response.ResponseHandler;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +17,18 @@ import java.util.List;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler({BadCredentialsException.class})
-    public ResponseEntity<?> handleBadCredentialException(BadCredentialsException ex, WebRequest webRequest) {
+    public ResponseEntity<?> handleBadCredentialException(BadCredentialsException ex) {
         return ResponseHandler.generateResponse("Check your mail or password", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({HttpMessageNotReadableException.class})
-    public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest webRequest) {
+    public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         return ResponseHandler.generateResponse("Http message not readable", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({ExpiredJwtException.class})
+    public ResponseEntity<?> handleExpiredJwtException(ExpiredJwtException ex) {
+        return ResponseHandler.generateResponse("Token is expired", HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({SignatureException.class})

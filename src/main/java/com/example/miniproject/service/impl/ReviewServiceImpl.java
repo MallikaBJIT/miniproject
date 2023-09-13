@@ -48,7 +48,7 @@ public class ReviewServiceImpl implements ReviewService {
     public void updateReview(int userId, int reviewId, ReviewDTO reviewDTO) {
         Review review = getReviewById(reviewId);
         if (review.getUser().getId() != userId) {
-            throw new CustomException("User id does not matched", HttpStatus.NOT_FOUND);
+            throw new CustomException("You didn't give this review", HttpStatus.NOT_FOUND);
         }
         if (review.getBook().isDeleted()) {
             throw new CustomException("Book is not available", HttpStatus.NOT_FOUND);
@@ -63,7 +63,7 @@ public class ReviewServiceImpl implements ReviewService {
     public void deleteReview(int reviewId, int userId) {
         Review review = getReviewById(reviewId);
         if (review.getUser().getId() != userId) {
-            throw new CustomException("User id does not matched", HttpStatus.NOT_FOUND);
+            throw new CustomException("You didn't give this review", HttpStatus.NOT_FOUND);
         }
         if (review.getBook().isDeleted()) {
             throw new CustomException("Book is not available. You can't modify/delete review"
