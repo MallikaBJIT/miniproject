@@ -95,6 +95,6 @@ public class BorrowedBookServiceImpl implements BorrowedBookService {
 
     private User getUser(int userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException("Invalid User", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CustomException("Invalid Userid", HttpStatus.NOT_FOUND));
     }
 }

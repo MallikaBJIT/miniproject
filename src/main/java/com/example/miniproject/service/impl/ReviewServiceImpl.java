@@ -32,7 +32,7 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         Book book = bookRepository.findByIdAndIsDeletedFalse(bookId)
-                .orElseThrow(() -> new CustomException("Book id not exist", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CustomException("Book does not exist", HttpStatus.NOT_FOUND));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException("User id not exist", HttpStatus.NOT_FOUND));
 
