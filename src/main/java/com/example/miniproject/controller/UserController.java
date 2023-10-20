@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping("users")
 public class UserController {
@@ -19,21 +21,28 @@ public class UserController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> get(@PathVariable int userId) {
-        return ResponseHandler.generateResponse("User details", HttpStatus.OK,
-                userService.getUserDetails(userId));
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<?> get(@PathVariable int userId) {
+//        return ResponseHandler.generateResponse("User details", HttpStatus.OK,
+//                userService.getUserDetails(userId));
+//    }
+
+    @GetMapping("/get")
+    public ResponseEntity<?> get() {
+        String mail = authenticationService.getUserMail();
+        return ResponseHandler.generateResponse(new Date(), "User details", HttpStatus.OK,
+                userService.getUserDetailsByMail(mail));
     }
 
     @GetMapping("/{userId}/books")
     public ResponseEntity<?> getBookByUserId(@PathVariable int userId) {
-        return ResponseHandler.generateResponse("Data fetched successfully", HttpStatus.OK,
+        return ResponseHandler.generateResponse(new Date(), "Data fetched successfully", HttpStatus.OK,
                 userService.getBookByUserId(userId, authenticationService.getUserFromToken()));
     }
 
     @GetMapping("/{userId}/borrowed-books")
     public ResponseEntity<?> getBorrowedByBookByUserId(@PathVariable int userId) {
-        return ResponseHandler.generateResponse("User borrowed book data fetched successfully", HttpStatus.OK,
+        return ResponseHandler.generateResponse(new Date(), "User borrowed book data fetched successfully", HttpStatus.OK,
                 userService.getBorrowedByBookByUserId(userId, authenticationService.getUserFromToken()));
     }
 

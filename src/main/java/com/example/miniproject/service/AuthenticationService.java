@@ -45,6 +45,7 @@ public class AuthenticationService {
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
+                .role(user.getRole().toString())
                 .build();
     }
 
@@ -61,6 +62,7 @@ public class AuthenticationService {
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
+                .role(user.getRole().toString())
                 .build();
     }
 
@@ -69,5 +71,9 @@ public class AuthenticationService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new CustomException("User not found for email: " + email, HttpStatus.NOT_FOUND));
+    }
+
+    public String getUserMail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

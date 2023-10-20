@@ -1,6 +1,7 @@
 package com.example.miniproject.service;
 
 import com.example.miniproject.dto.ReviewDTO;
+import com.example.miniproject.dto.ReviewResponseDTO;
 
 import java.util.List;
 
@@ -11,5 +12,5 @@ public interface ReviewService {
 
     public void deleteReview(int reviewId, int userId);
 
-    public List<ReviewDTO> getReviewByBookId(int bookId);
+    public List<ReviewResponseDTO> getReviewByBookId(int bookId);
 }

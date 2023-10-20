@@ -20,7 +20,13 @@ public class Book {
     private String title;
 
     @Column(nullable = false)
-    private String body;
+    private String author;
+
+    @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    private String bookCoverUrl;
 
     private boolean available = true;
     private boolean isDeleted = false;

@@ -1,6 +1,7 @@
 package com.example.miniproject.service.impl;
 
 import com.example.miniproject.dto.ReviewDTO;
+import com.example.miniproject.dto.ReviewResponseDTO;
 import com.example.miniproject.entity.Book;
 import com.example.miniproject.entity.Review;
 import com.example.miniproject.entity.User;
@@ -74,12 +75,22 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ReviewDTO> getReviewByBookId(int bookId) {
+    public List<ReviewResponseDTO> getReviewByBookId(int bookId) {
         Book book = bookRepository.findByIdAndIsDeletedFalse(bookId)
                 .orElseThrow(() -> new CustomException("Book id not exist", HttpStatus.NOT_FOUND));
 
         return reviewRepository.findAllByBookId(bookId).stream()
-                .map(review -> modelMapper.map(review, ReviewDTO.class)).toList();
+                .map(this::mapToReviewResponse).toList();
+    }
+
+    private ReviewResponseDTO mapToReviewResponse(Review review) {
+        return ReviewResponseDTO
+                .builder()
+                .reviewId(review.getReviewId())
+                .reviewText(review.getReviewText())
+                .rating(review.getRating())
+                .userName(review.getUser().getFirstName() + " " + review.getUser().getLastName())
+                .build();
     }
 
     private Review getReviewById(int reviewId) {

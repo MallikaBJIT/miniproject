@@ -35,7 +35,8 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, AppConstant.SIGN_IN, AppConstant.SIGN_UP).permitAll()
-                        .requestMatchers(HttpMethod.GET, AppConstant.USER_DETAILS).hasRole(AppConstant.ADMIN)
+                        //.requestMatchers(HttpMethod.GET, AppConstant.USER_DETAILS).hasRole(AppConstant.ADMIN)
+                        .requestMatchers(HttpMethod.GET, AppConstant.USER_DETAILS).hasAnyRole(AppConstant.ADMIN, AppConstant.USER)
                         .requestMatchers(HttpMethod.GET, AppConstant.USER_OWNED_BOOK).hasAnyRole(AppConstant.ADMIN, AppConstant.USER)
                         .requestMatchers(HttpMethod.GET, AppConstant.USER_BORROWED_BOOK).hasAnyRole(AppConstant.ADMIN, AppConstant.USER)
 

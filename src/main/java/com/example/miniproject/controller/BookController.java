@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/books")
@@ -21,23 +23,23 @@ public class BookController {
     @PostMapping("/create")
     public ResponseEntity<?> add(@RequestBody @Valid BookDTO bookDTO) {
         bookService.createBook(bookDTO);
-        return ResponseHandler.generateResponse("Book is added", HttpStatus.CREATED);
+        return ResponseHandler.generateResponse(new Date(), "Book is added", HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable int id, @RequestBody @Valid BookUpdateDto bookUpdateDto) {
         bookService.updateBook(id, bookUpdateDto);
-        return ResponseHandler.generateResponse("book is updated", HttpStatus.OK);
+        return ResponseHandler.generateResponse(new Date(), "book is updated", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         bookService.deleteBook(id);
-        return ResponseHandler.generateResponse("Book is deleted successfully", HttpStatus.OK);
+        return ResponseHandler.generateResponse(new Date(), "Book is deleted successfully", HttpStatus.OK);
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> get() {
-        return ResponseHandler.generateResponse("Book List", HttpStatus.OK, bookService.getAllBooks());
+        return ResponseHandler.generateResponse(new Date(), "Book List", HttpStatus.OK, bookService.getAllBooks());
     }
 }

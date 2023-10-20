@@ -5,7 +5,7 @@ public class AppConstant {
     public static final String USER = "USER";
     public static final String SIGN_IN = "/user/login";
     public static final String SIGN_UP = "/user/register";
-    public static final String USER_DETAILS = "users/{userId}";
+    public static final String USER_DETAILS = "users/get";
     public static final String USER_OWNED_BOOK = "users/{userId}/books";
     public static final String USER_BORROWED_BOOK = "users/{userId}/borrowed-books";
     public static final String CREATE_BOOK = "books/create";

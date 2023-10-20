@@ -12,6 +12,13 @@ import lombok.NoArgsConstructor;
 public class BookDTO {
     @NotNull(message = "Title is required")
     private String title;
+
+    @NotNull(message = "Author name is required")
+    private String author;
+
     @NotNull(message = "Body is required")
-    private String body;
+    private String description;
+
+    @NotNull(message = "Image Url is required")
+    private String bookCoverUrl;
 }

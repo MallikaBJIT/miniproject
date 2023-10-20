@@ -34,10 +34,10 @@ public class BookServiceImpl implements BookService {
     public void updateBook(int id, BookUpdateDto bookUpdateDto) {
         Book book = getBookById(id);
         book.setTitle(bookUpdateDto.getTitle());
-        book.setBody(bookUpdateDto.getBody());
-        book.setAvailable(bookUpdateDto.isAvailable());
+        book.setAuthor(bookUpdateDto.getAuthor());
+        book.setDescription(bookUpdateDto.getDescription());
+        book.setBookCoverUrl(bookUpdateDto.getBookCoverUrl());
         bookRepository.save(book);
-
     }
 
     @Override

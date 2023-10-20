@@ -27,6 +27,12 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(user, UserResponseDTO.class);
     }
 
+
+    public UserResponseDTO getUserDetailsByMail(String mail) {
+        User user = getUserByMail(mail);
+        return modelMapper.map(user, UserResponseDTO.class);
+    }
+
     @Override
     public Set<String> getBookByUserId(int userId, User user) {
         if (!user.getRole().equals(Role.ADMIN) && userId != user.getId()) {
@@ -53,6 +59,12 @@ public class UserServiceImpl implements UserService {
     private User getUserById(int userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException("User doesn't found with id: " + userId
+                        , HttpStatus.NOT_FOUND));
+    }
+
+    private User getUserByMail(String mail) {
+        return userRepository.findByEmail(mail)
+                .orElseThrow(() -> new CustomException("User doesn't found with id: " + mail
                         , HttpStatus.NOT_FOUND));
     }
 }

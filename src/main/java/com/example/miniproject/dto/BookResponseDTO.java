@@ -13,7 +13,9 @@ import lombok.NoArgsConstructor;
 public class BookResponseDTO {
     private int id;
     private String title;
-    private String body;
+    private String author;
+    private String description;
+    private String bookCoverUrl;
     private Double rating;
     private boolean available;
 }

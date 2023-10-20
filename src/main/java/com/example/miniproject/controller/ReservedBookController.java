@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping("/books")
 public class ReservedBookController {
@@ -19,12 +21,12 @@ public class ReservedBookController {
     @GetMapping("/{bookId}/reserve")
     public ResponseEntity<?> reserveReservation(@PathVariable int bookId) {
         reservedBookService.bookReserve(bookId, authenticationService.getUserFromToken().getId());
-        return ResponseHandler.generateResponse("Book is reserved", HttpStatus.CREATED);
+        return ResponseHandler.generateResponse(new Date(), "Book is reserved", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{bookId}/cancel")
     public ResponseEntity<?> cancelReservation(@PathVariable int bookId) {
         reservedBookService.cancelReservation(bookId, authenticationService.getUserFromToken().getId());
-        return ResponseHandler.generateResponse("Reservation is cancel", HttpStatus.OK);
+        return ResponseHandler.generateResponse(new Date(), "Reservation is cancel", HttpStatus.OK);
     }
 }

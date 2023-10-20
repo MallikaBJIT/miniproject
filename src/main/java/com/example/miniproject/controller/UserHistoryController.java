@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 @RestController
 public class UserHistoryController {
     @Autowired
@@ -24,7 +26,7 @@ public class UserHistoryController {
 
     @GetMapping("users/{userId}/history")
     public ResponseEntity<?> get(@PathVariable int userId) {
-        return ResponseHandler.generateResponse("User Histories of user id " + userId,
+        return ResponseHandler.generateResponse(new Date(),"User Histories of user id " + userId,
                 HttpStatus.OK,
                 userHistoryService.viewHistory(userId, authenticationService.getUserFromToken()));
     }

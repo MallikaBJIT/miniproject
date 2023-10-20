@@ -9,8 +9,12 @@ import lombok.*;
 public class BookUpdateDto {
     @NotNull(message = "Title is required")
     private String title;
-    @NotNull(message = "Body is required")
-    private String body;
-    @NotNull(message = "Available field is required")
-    private boolean available;
+
+    @NotNull(message = "Author name is required")
+    private String author;
+
+    @NotNull(message = "Description is required")
+    private String description;
+
+    private String bookCoverUrl;
 }

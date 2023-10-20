@@ -13,4 +13,6 @@ public interface UserService {
 
     public Set<String> getBorrowedByBookByUserId(int userId, User user);
 
+    public UserResponseDTO getUserDetailsByMail(String mail);
+
 }
