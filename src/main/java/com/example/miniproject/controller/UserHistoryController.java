@@ -1,6 +1,7 @@
 package com.example.miniproject.controller;
 
 import com.example.miniproject.dto.UserRequestDTO;
+import com.example.miniproject.entity.User;
 import com.example.miniproject.response.ResponseHandler;
 import com.example.miniproject.service.AuthenticationService;
 import com.example.miniproject.service.UserHistoryService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 
 @RestController
+@RequestMapping("/users")
 public class UserHistoryController {
     @Autowired
     private UserHistoryService userHistoryService;
@@ -24,9 +26,17 @@ public class UserHistoryController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping("users/{userId}/history")
-    public ResponseEntity<?> get(@PathVariable int userId) {
-        return ResponseHandler.generateResponse(new Date(),"User Histories of user id " + userId,
+    @GetMapping("/history")
+    public ResponseEntity<?> getHistory() {
+    	User user = authenticationService.getUserFromToken();
+        return ResponseHandler.generateResponse(new Date(),"User Histories",
+                HttpStatus.OK,
+                userHistoryService.viewHistory(user.getId(), user));
+    }
+    
+    @GetMapping("/{userId}/history")
+    public ResponseEntity<?> getHistoryByAdmin(@PathVariable int userId) {
+        return ResponseHandler.generateResponse(new Date(),"User Histories",
                 HttpStatus.OK,
                 userHistoryService.viewHistory(userId, authenticationService.getUserFromToken()));
     }

@@ -42,4 +42,9 @@ public class BookController {
     public ResponseEntity<?> get() {
         return ResponseHandler.generateResponse(new Date(), "Book List", HttpStatus.OK, bookService.getAllBooks());
     }
+    
+    @GetMapping("/get/{bookId}")
+    public ResponseEntity<?> get(@PathVariable int bookId) {
+        return ResponseHandler.generateResponse(new Date(), "Book List", HttpStatus.OK, bookService.getById(bookId));
+    }
 }

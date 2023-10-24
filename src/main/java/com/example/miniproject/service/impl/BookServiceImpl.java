@@ -45,7 +45,7 @@ public class BookServiceImpl implements BookService {
         Book book = getBookById(id);
 
         if (!book.isAvailable()) {
-            throw new CustomException("You can't delete a borrowed book with id " + id, HttpStatus.BAD_REQUEST);
+            throw new CustomException("You can't delete a borrowed book", HttpStatus.BAD_REQUEST);
         }
         book.setDeleted(true);
         bookRepository.save(book);
@@ -62,4 +62,9 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAllByIsDeleted(false)
                 .stream().map(book -> modelMapper.map(book, BookResponseDTO.class)).toList();
     }
+
+	@Override
+	public BookResponseDTO getById(int bookId) {
+		return modelMapper.map(getBookById(bookId), BookResponseDTO.class);
+	}
 }

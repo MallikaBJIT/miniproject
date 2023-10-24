@@ -16,4 +16,6 @@ public interface BookService {
     public void deleteBook(int id);
 
     public List<BookResponseDTO> getAllBooks();
+    
+    public BookResponseDTO getById(int bookId);
 }

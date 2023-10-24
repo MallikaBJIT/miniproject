@@ -6,6 +6,7 @@ public class AppConstant {
     public static final String SIGN_IN = "/user/login";
     public static final String SIGN_UP = "/user/register";
     public static final String USER_DETAILS = "users/get";
+    public static final String ALL_USER_DETAILS = "users/get/all";
     public static final String USER_OWNED_BOOK = "users/{userId}/books";
     public static final String USER_BORROWED_BOOK = "users/{userId}/borrowed-books";
     public static final String CREATE_BOOK = "books/create";
@@ -21,5 +22,6 @@ public class AppConstant {
     public static final String DELETE_REVIEW = "books/reviews/{reviewId}/delete";
     public static final String GET_REVIEW = "books/{bookId}/reviews";
     public static final String GET_USER_HISTORY = "users/{userId}/history";
+    public static final String GET_PERSONAL_HISTORY = "users/history";
 
 }

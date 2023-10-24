@@ -67,4 +67,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new CustomException("User doesn't found with id: " + mail
                         , HttpStatus.NOT_FOUND));
     }
+
+
+	@Override
+	public List<UserResponseDTO> getUserDetails() {
+		return userRepository.findAll()
+				.stream()
+				.map(user -> modelMapper.map(user, UserResponseDTO.class))
+				.toList();
+	}
 }

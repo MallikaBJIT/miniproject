@@ -25,7 +25,7 @@ public class BorrowedBookController {
     public ResponseEntity<?> borrowBook(@PathVariable int bookId
             , @RequestBody @Valid BorrowedBookDTO borrowedBookDTO) {
         User user = authenticationService.getUserFromToken();
-        return ResponseHandler.generateResponse(new Date(),"Borrowed book", HttpStatus.OK,
+        return ResponseHandler.generateResponse(new Date(),"Successfully borrowed book", HttpStatus.OK,
                 borrowedBookService.borrowBook(bookId, user.getId(), borrowedBookDTO));
     }
 

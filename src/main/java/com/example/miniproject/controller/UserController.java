@@ -33,6 +33,12 @@ public class UserController {
         return ResponseHandler.generateResponse(new Date(), "User details", HttpStatus.OK,
                 userService.getUserDetailsByMail(mail));
     }
+    
+    @GetMapping("/get/all")
+    public ResponseEntity<?> getAllUser() {
+        return ResponseHandler.generateResponse(new Date(), "User details", HttpStatus.OK,
+                userService.getUserDetails());
+    }
 
     @GetMapping("/{userId}/books")
     public ResponseEntity<?> getBookByUserId(@PathVariable int userId) {

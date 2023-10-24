@@ -8,6 +8,8 @@ import java.util.Set;
 
 public interface UserService {
     public UserResponseDTO getUserDetails(int userId);
+    
+    public List<UserResponseDTO> getUserDetails();
 
     public Set<String> getBookByUserId(int userId, User user);
 

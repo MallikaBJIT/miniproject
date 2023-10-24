@@ -19,7 +19,7 @@ public class ReviewController {
     private ReviewService reviewService;
     private AuthenticationService authenticationService;
 
-    @PostMapping("{bookId}/reviews/create")
+    @PostMapping("/{bookId}/reviews/create")
     public ResponseEntity<?> add(@PathVariable int bookId,
                                  @RequestBody @Valid ReviewDTO reviewDTO) {
         reviewService.createReview(bookId, authenticationService.getUserFromToken().getId(), reviewDTO);

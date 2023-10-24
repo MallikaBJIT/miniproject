@@ -54,7 +54,7 @@ public class ReservedBookServiceImpl implements ReservedBookService {
         ReservedBook reservedBook = book.getReservedBooks().stream()
                 .filter(reservedBook1 -> reservedBook1.getUser().getId() == userId)
                 .findFirst()
-                .orElseThrow(() -> new CustomException("You didn't reserved the book", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CustomException("You didn't reserved the book", HttpStatus.BAD_REQUEST));
 
         reservedBookRepository.delete(reservedBook);
     }

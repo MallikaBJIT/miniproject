@@ -14,7 +14,7 @@ public class ReviewDTO {
     private String reviewText;
 
     @NotNull(message = "Rating is required")
-    @DecimalMin(value = "0.1", inclusive = true)
-    @DecimalMax(value = "10.0", inclusive = true)
+    @DecimalMin(value = "0.0", inclusive = true)
+    @DecimalMax(value = "5.0", inclusive = true)
     private Double rating;
 }
